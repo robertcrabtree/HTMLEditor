@@ -16,15 +16,25 @@ class ViewController: UIViewController {
         case selectionChanged
     }
     
-    lazy var buttonStack: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.alignment = .fill
-        stack.spacing = 10
-        stack.distribution = .equalSpacing
-        return stack
-    }()
+    @IBOutlet weak var printButton: UIButton! {
+        didSet {
+            printButton.addTarget(self, action: #selector(onPrintHTML(_:)), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet weak var boldButton: UIButton! {
+        didSet {
+            boldButton.addTarget(self, action: #selector(onBold(_:)), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet weak var italicButton: UIButton! {
+        didSet {
+            italicButton.addTarget(self, action: #selector(onItalic(_:)), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet weak var webViewContainerView: UIView!
     
     lazy var webView: WKWebView = {
         let controller = WKUserContentController()
@@ -36,61 +46,27 @@ class ViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
     }()
-    
-    let doneButton: UIButton = {
-        let button = UIButton(type: .roundedRect)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Done", for: .normal)
-        button.addTarget(self, action: #selector(onDone(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var boldButton: UIButton = {
-        let button = UIButton(type: .roundedRect)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Bold", for: .normal)
-        button.addTarget(self, action: #selector(onBold(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var italicButton: UIButton = {
-        let button = UIButton(type: .roundedRect)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Italic", for: .normal)
-        button.addTarget(self, action: #selector(onItalic(_:)), for: .touchUpInside)
-        return button
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(buttonStack)
-        view.addSubview(webView)
-        view.addSubview(doneButton)
-        
-        buttonStack.addArrangedSubview(boldButton)
-        buttonStack.addArrangedSubview(italicButton)
+        webViewContainerView.addSubview(webView)
 
         NSLayoutConstraint.activate([
-            buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            webView.topAnchor.constraint(equalTo: buttonStack.bottomAnchor, constant: 20),
-            webView.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: -20),
-            doneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            webView.leadingAnchor.constraint(equalTo: webViewContainerView.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: webViewContainerView.trailingAnchor),
+            webView.topAnchor.constraint(equalTo: webViewContainerView.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: webViewContainerView.bottomAnchor),
         ])
         
         let htmlFile = Bundle.main.path(forResource: "index", ofType: "html")!
         let html = try! String(contentsOfFile: htmlFile, encoding: .utf8)
         webView.loadHTMLString(html, baseURL: Bundle.main.bundleURL)
-
     }
 }
 
 extension ViewController {
-    @objc func onDone(_ sender: UIButton) {
+    @objc func onPrintHTML(_ sender: UIButton) {
         webView.evaluateJavaScript("document.getElementById('thedata').value") { (result, error) in
             if let error = error {
                 print("Error: \(error)")
@@ -103,31 +79,11 @@ extension ViewController {
     }
     
     @objc func onBold(_ sender: UIButton) {
-        isActive(attribute: "bold") { active in
-            if active {
-                self.deactivate(attribute: "bold") { _ in
-                    self.boldButton.setTitle("Bold", for: .normal)
-                }
-            } else {
-                self.activate(attribute: "bold") { _ in
-                    self.boldButton.setTitle("Bold(X)", for: .normal)
-                }
-            }
-        }
+        toggle(attribute: "bold", for: boldButton)
     }
     
     @objc func onItalic(_ sender: UIButton) {
-        isActive(attribute: "italic") { active in
-            if active {
-                self.deactivate(attribute: "italic") { _ in
-                    self.italicButton.setTitle("Italic", for: .normal)
-                }
-            } else {
-                self.activate(attribute: "italic") { _ in
-                    self.italicButton.setTitle("Italic(X)", for: .normal)
-                }
-            }
-        }
+        toggle(attribute: "italic", for: italicButton)
     }
     
     func isActive(attribute: String, completion: @escaping (Bool) -> Void) {
@@ -171,6 +127,34 @@ extension ViewController {
             }
         }
     }
+    
+    func toggle(attribute: String, for button: UIButton) {
+        isActive(attribute: attribute) { active in
+            if active {
+                self.deactivate(attribute: attribute) { _ in
+                    self.update(attributeButton: button, attribute: attribute)
+                }
+            } else {
+                self.activate(attribute: attribute) { _ in
+                    self.update(attributeButton: button, attribute: attribute)
+                }
+            }
+        }
+    }
+    
+    func update(attributeButton: UIButton, attribute: String) {
+        isActive(attribute: attribute) { active in
+            self.update(attributeButton: attributeButton, isActive: active)
+        }
+    }
+    
+    func update(attributeButton: UIButton, isActive: Bool) {
+        if isActive {
+            attributeButton.setTitleColor(.red, for: .normal)
+        } else {
+            attributeButton.setTitleColor(.black, for: .normal)
+        }
+    }
 }
 
 extension ViewController: WKScriptMessageHandler {
@@ -179,20 +163,8 @@ extension ViewController: WKScriptMessageHandler {
         guard let message = Message(rawValue: message.name) else { print("crap"); return }
         switch message {
         case .selectionChanged, .textChanged:
-            isActive(attribute: "bold") { active in
-                if active {
-                    self.boldButton.setTitle("Bold(X)", for: .normal)
-                } else {
-                    self.boldButton.setTitle("Bold", for: .normal)
-                }
-            }
-            isActive(attribute: "italic") { active in
-                if active {
-                    self.italicButton.setTitle("Italic(X)", for: .normal)
-                } else {
-                    self.italicButton.setTitle("Italic", for: .normal)
-                }
-            }
+            update(attributeButton: boldButton, attribute: "bold")
+            update(attributeButton: italicButton, attribute: "italic")
         }
     }
 }
