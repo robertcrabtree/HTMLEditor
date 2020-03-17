@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="trix.css">
+  <link rel="stylesheet" type="text/css" href="trix-overrides.css">
+  <style type="text/css">
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    .fullsize {
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    trix-editor {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto !important;
+    }
+  
+    trix-toolbar .trix-button--icon {
+        height: 2em;;
+        width: 2em;
+        max-width: 2em
+    }
+
+<!--  trix-toolbar .trix-button-row {-->
+<!--      flex-wrap: wrap;-->
+<!--  }-->
+  
+  </style>
+  <script type="text/javascript" src="trix.js"></script>
+  <script type="text/javascript">
+    document.addEventListener("trix-change", function(event) {
+      var message = {'fruit':'apple'};
+      window.webkit.messageHandlers.textChanged.postMessage('trix-change');
+    })
+    document.addEventListener("trix-selection-change", function(event) {
+      var message = {'fruit':'apple'};
+      window.webkit.messageHandlers.selectionChanged.postMessage('trix-selection-change');
+    })
+  </script>
+</head>
+<body>
+  <form class="fullsize">
+    <input id="thedata" type="hidden" name="content">
+    <input id="bob" type="hidden">
+    <trix-editor input="thedata" toolbar="bob" id="beditor"></trix-editor>
+  </form>
+</body>
+</html>
