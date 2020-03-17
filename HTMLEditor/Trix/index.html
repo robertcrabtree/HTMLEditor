@@ -40,20 +40,18 @@
   <script type="text/javascript" src="trix.js"></script>
   <script type="text/javascript">
     document.addEventListener("trix-change", function(event) {
-      var message = {'fruit':'apple'};
-      window.webkit.messageHandlers.textChanged.postMessage('trix-change');
+      window.webkit.messageHandlers.textChanged.postMessage({});
     })
     document.addEventListener("trix-selection-change", function(event) {
-      var message = {'fruit':'apple'};
-      window.webkit.messageHandlers.selectionChanged.postMessage('trix-selection-change');
+      window.webkit.messageHandlers.selectionChanged.postMessage({});
     })
   </script>
 </head>
 <body>
   <form class="fullsize">
     <input id="thedata" type="hidden" name="content">
-    <input id="bob" type="hidden">
-    <trix-editor input="thedata" toolbar="bob" id="beditor"></trix-editor>
+    <input id="empty" type="hidden">
+    <trix-editor input="thedata" toolbar="empty"></trix-editor>
   </form>
 </body>
 </html>
