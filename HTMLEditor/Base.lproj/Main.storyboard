@@ -83,7 +83,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="b7z-5N-shA"/>
+                    <navigationItem key="navigationItem" id="b7z-5N-shA">
+                        <barButtonItem key="rightBarButtonItem" title="Clear" id="6Bp-Hx-0W3">
+                            <connections>
+                                <action selector="onClear:" destination="BYZ-38-t0r" id="DMW-W9-8Ie"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="boldButton" destination="DO8-Wq-eQL" id="AIP-Dz-Hdd"/>
                         <outlet property="bulletButton" destination="97g-bd-kwF" id="ZK7-ni-FH5"/>

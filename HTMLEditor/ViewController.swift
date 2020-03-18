@@ -99,6 +99,10 @@ extension ViewController {
 
 extension ViewController {
     
+    @IBAction func onClear(_ sender: UIBarButtonItem) {
+        clearText()
+    }
+    
     @objc func onBold(_ sender: UIButton) {
         toggle(attribute: .bold)
     }
@@ -151,6 +155,15 @@ extension ViewController: WKScriptMessageHandler {
 // MARK: - Private methods
 
 extension ViewController {
+    
+    private func clearText() {
+        let js = "document.querySelector('trix-editor').editor.loadHTML('')"
+        webView.evaluateJavaScript(js) { (result, error) in
+            if let error = error {
+                print("isActivated Error: \(error)")
+            }
+        }
+    }
     
     private func checkActivated(attribute: Attribute, then handle: @escaping (Bool) -> Void) {
         let js = "document.querySelector('trix-editor').editor.attributeIsActive('\(attribute.rawValue)')"
