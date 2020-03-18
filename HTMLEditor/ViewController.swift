@@ -36,6 +36,12 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var bulletButton: UIButton! {
+        didSet {
+            bulletButton.addTarget(self, action: #selector(onBullet(_:)), for: .touchUpInside)
+        }
+    }
+
     @IBOutlet weak var webViewContainerView: UIView!
     
     lazy var webView: WKWebView = {
@@ -95,6 +101,10 @@ extension ViewController {
     @objc func onItalic(_ sender: UIButton) {
         toggle(attribute: "italic", associatedWith: italicButton)
     }
+    
+    @objc func onBullet(_ sender: UIButton) {
+        toggle(attribute: "bullet", associatedWith: bulletButton)
+    }
 }
 
 // MARK: - Message handler
@@ -107,6 +117,7 @@ extension ViewController: WKScriptMessageHandler {
         case .selectionChanged, .textChanged:
             updateTitleColor(of: boldButton, associatedWith: "bold")
             updateTitleColor(of: italicButton, associatedWith: "italic")
+            updateTitleColor(of: bulletButton, associatedWith: "bullet")
         }
     }
 }
@@ -128,28 +139,24 @@ extension ViewController {
         }
     }
     
-    private func activate(attribute: String, then handle: @escaping (Bool) -> Void) {
+    private func activate(attribute: String, then handle: @escaping () -> Void) {
         let js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("activate Error: \(error)")
-            } else if let result = result as? Bool {
-                handle(result)
             } else {
-                print("activate oh crap")
+                handle()
             }
         }
     }
     
-    private func deactivate(attribute: String, then handle: @escaping (Bool) -> Void) {
+    private func deactivate(attribute: String, then handle: @escaping () -> Void) {
         let js = "document.querySelector('trix-editor').editor.deactivateAttribute('\(attribute)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("deactivate Error: \(error)")
-            } else if let result = result as? Bool {
-                handle(result)
             } else {
-                print("deactivate oh crap")
+                handle()
             }
         }
     }
@@ -157,11 +164,11 @@ extension ViewController {
     private func toggle(attribute: String, associatedWith attributeButton: UIButton) {
         checkActivated(attribute: attribute) { isActivated in
             if isActivated {
-                self.deactivate(attribute: attribute) { _ in
+                self.deactivate(attribute: attribute) {
                     self.updateTitleColor(of: attributeButton, associatedWith: attribute)
                 }
             } else {
-                self.activate(attribute: attribute) { _ in
+                self.activate(attribute: attribute) {
                     self.updateTitleColor(of: attributeButton, associatedWith: attribute)
                 }
             }
