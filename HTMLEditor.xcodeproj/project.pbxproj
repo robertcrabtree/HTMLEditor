@@ -17,6 +17,7 @@
 		D42792482421478F0044BB7B /* trix.css in Resources */ = {isa = PBXBuildFile; fileRef = D42792442421478F0044BB7B /* trix.css */; };
 		D42792492421478F0044BB7B /* trix-overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = D42792452421478F0044BB7B /* trix-overrides.css */; };
 		D427924A2421478F0044BB7B /* trix.js in Resources */ = {isa = PBXBuildFile; fileRef = D42792462421478F0044BB7B /* trix.js */; };
+		D427924C2421C20A0044BB7B /* MenulessWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D427924B2421C20A0044BB7B /* MenulessWebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		D42792442421478F0044BB7B /* trix.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = trix.css; sourceTree = "<group>"; };
 		D42792452421478F0044BB7B /* trix-overrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "trix-overrides.css"; sourceTree = "<group>"; };
 		D42792462421478F0044BB7B /* trix.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = trix.js; sourceTree = "<group>"; };
+		D427924B2421C20A0044BB7B /* MenulessWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenulessWebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				D427922E242147100044BB7B /* AppDelegate.swift */,
 				D4279230242147100044BB7B /* SceneDelegate.swift */,
 				D4279232242147100044BB7B /* ViewController.swift */,
+				D427924B2421C20A0044BB7B /* MenulessWebView.swift */,
 				D4279234242147100044BB7B /* Main.storyboard */,
 				D4279237242147130044BB7B /* Assets.xcassets */,
 				D4279239242147130044BB7B /* LaunchScreen.storyboard */,
@@ -163,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4279233242147100044BB7B /* ViewController.swift in Sources */,
+				D427924C2421C20A0044BB7B /* MenulessWebView.swift in Sources */,
 				D427922F242147100044BB7B /* AppDelegate.swift in Sources */,
 				D4279231242147100044BB7B /* SceneDelegate.swift in Sources */,
 			);
