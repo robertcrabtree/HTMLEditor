@@ -9,6 +9,8 @@
 import UIKit
 import WebKit
 
+// MARK: - Properties
+
 class ViewController: UIViewController {
     
     enum Message: String {
@@ -46,7 +48,12 @@ class ViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
     }()
+}
 
+// MARK: - Life cycle
+
+extension ViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,7 +72,10 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - Action methods
+
 extension ViewController {
+    
     @objc func onPrintHTML(_ sender: UIButton) {
         webView.evaluateJavaScript("document.getElementById('thedata').value") { (result, error) in
             if let error = error {
@@ -79,83 +89,15 @@ extension ViewController {
     }
     
     @objc func onBold(_ sender: UIButton) {
-        toggle(attribute: "bold", for: boldButton)
+        toggle(attribute: "bold", associatedWith: boldButton)
     }
     
     @objc func onItalic(_ sender: UIButton) {
-        toggle(attribute: "italic", for: italicButton)
-    }
-    
-    func checkActivated(attribute: String, then handle: @escaping (Bool) -> Void) {
-        let js = "document.querySelector('trix-editor').editor.attributeIsActive('\(attribute)')"
-        webView.evaluateJavaScript(js) { (result, error) in
-            if let error = error {
-                print("isActivated Error: \(error)")
-            } else if let result = result as? Bool {
-                print("isActivated Result: \(result)")
-                handle(result)
-            } else {
-                print("isActivated oh crap")
-            }
-        }
-    }
-    
-    func activate(attribute: String, then handle: @escaping (Bool) -> Void) {
-        let js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute)')"
-        webView.evaluateJavaScript(js) { (result, error) in
-            if let error = error {
-                print("activate Error: \(error)")
-            } else if let result = result as? Bool {
-                print("activate Result: \(result)")
-                handle(result)
-            } else {
-                print("activate oh crap")
-            }
-        }
-    }
-    
-    func deactivate(attribute: String, then handle: @escaping (Bool) -> Void) {
-        let js = "document.querySelector('trix-editor').editor.deactivateAttribute('\(attribute)')"
-        webView.evaluateJavaScript(js) { (result, error) in
-            if let error = error {
-                print("deactivate Error: \(error)")
-            } else if let result = result as? Bool {
-                print("deactivate Result: \(result)")
-                handle(result)
-            } else {
-                print("deactivate oh crap")
-            }
-        }
-    }
-    
-    func toggle(attribute: String, for attributeButton: UIButton) {
-        checkActivated(attribute: attribute) { isActivated in
-            if isActivated {
-                self.deactivate(attribute: attribute) { _ in
-                    self.update(attributeButton: attributeButton, attribute: attribute)
-                }
-            } else {
-                self.activate(attribute: attribute) { _ in
-                    self.update(attributeButton: attributeButton, attribute: attribute)
-                }
-            }
-        }
-    }
-    
-    func update(attributeButton: UIButton, attribute: String) {
-        checkActivated(attribute: attribute) { isActivated in
-            self.update(attributeButton: attributeButton, isActivated: isActivated)
-        }
-    }
-    
-    func update(attributeButton: UIButton, isActivated: Bool) {
-        if isActivated {
-            attributeButton.setTitleColor(.red, for: .normal)
-        } else {
-            attributeButton.setTitleColor(.black, for: .normal)
-        }
+        toggle(attribute: "italic", associatedWith: italicButton)
     }
 }
+
+// MARK: - Message handler
 
 extension ViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -163,8 +105,80 @@ extension ViewController: WKScriptMessageHandler {
         guard let message = Message(rawValue: message.name) else { print("crap"); return }
         switch message {
         case .selectionChanged, .textChanged:
-            update(attributeButton: boldButton, attribute: "bold")
-            update(attributeButton: italicButton, attribute: "italic")
+            updateTitleColor(of: boldButton, associatedWith: "bold")
+            updateTitleColor(of: italicButton, associatedWith: "italic")
+        }
+    }
+}
+
+// MARK: - Private methods
+
+extension ViewController {
+    
+    private func checkActivated(attribute: String, then handle: @escaping (Bool) -> Void) {
+        let js = "document.querySelector('trix-editor').editor.attributeIsActive('\(attribute)')"
+        webView.evaluateJavaScript(js) { (result, error) in
+            if let error = error {
+                print("isActivated Error: \(error)")
+            } else if let result = result as? Bool {
+                handle(result)
+            } else {
+                print("isActivated oh crap")
+            }
+        }
+    }
+    
+    private func activate(attribute: String, then handle: @escaping (Bool) -> Void) {
+        let js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute)')"
+        webView.evaluateJavaScript(js) { (result, error) in
+            if let error = error {
+                print("activate Error: \(error)")
+            } else if let result = result as? Bool {
+                handle(result)
+            } else {
+                print("activate oh crap")
+            }
+        }
+    }
+    
+    private func deactivate(attribute: String, then handle: @escaping (Bool) -> Void) {
+        let js = "document.querySelector('trix-editor').editor.deactivateAttribute('\(attribute)')"
+        webView.evaluateJavaScript(js) { (result, error) in
+            if let error = error {
+                print("deactivate Error: \(error)")
+            } else if let result = result as? Bool {
+                handle(result)
+            } else {
+                print("deactivate oh crap")
+            }
+        }
+    }
+    
+    private func toggle(attribute: String, associatedWith attributeButton: UIButton) {
+        checkActivated(attribute: attribute) { isActivated in
+            if isActivated {
+                self.deactivate(attribute: attribute) { _ in
+                    self.updateTitleColor(of: attributeButton, associatedWith: attribute)
+                }
+            } else {
+                self.activate(attribute: attribute) { _ in
+                    self.updateTitleColor(of: attributeButton, associatedWith: attribute)
+                }
+            }
+        }
+    }
+    
+    private func updateTitleColor(of attributeButton: UIButton, associatedWith attribute: String) {
+        checkActivated(attribute: attribute) { isActivated in
+            self.updateTitleColor(of: attributeButton, isActivated: isActivated)
+        }
+    }
+    
+    private func updateTitleColor(of attributeButton: UIButton, isActivated: Bool) {
+        if isActivated {
+            attributeButton.setTitleColor(.red, for: .normal)
+        } else {
+            attributeButton.setTitleColor(.black, for: .normal)
         }
     }
 }
