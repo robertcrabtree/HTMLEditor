@@ -47,6 +47,12 @@ class ViewController: UIViewController {
             hrefButton.addTarget(self, action: #selector(onHREF(_:)), for: .touchUpInside)
         }
     }
+    
+    @IBOutlet weak var headingButton: UIButton! {
+        didSet {
+            headingButton.addTarget(self, action: #selector(onHeading(_:)), for: .touchUpInside)
+        }
+    }
 
     @IBOutlet weak var webViewContainerView: UIView!
     
@@ -125,6 +131,10 @@ extension ViewController {
             }
         }
     }
+    
+    @objc func onHeading(_ sender: UIButton) {
+        toggle(attribute: "heading1", associatedWith: headingButton)
+    }
 }
 
 // MARK: - Message handler
@@ -139,6 +149,7 @@ extension ViewController: WKScriptMessageHandler {
             updateTitleColor(of: italicButton, associatedWith: "italic")
             updateTitleColor(of: bulletButton, associatedWith: "bullet")
             updateTitleColor(of: hrefButton, associatedWith: "href")
+            updateTitleColor(of: headingButton, associatedWith: "heading1")
         }
     }
 }

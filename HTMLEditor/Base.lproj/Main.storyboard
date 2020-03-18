@@ -16,29 +16,35 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="af7-ge-hHE">
-                                <rect key="frame" x="117" y="88" width="180" height="30"/>
+                                <rect key="frame" x="46" y="98" width="322" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DO8-Wq-eQL">
-                                        <rect key="frame" x="0.0" y="0.0" width="39" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="58" height="30"/>
                                         <state key="normal" title="Bold">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="upK-wb-ugt">
-                                        <rect key="frame" x="47" y="0.0" width="39" height="30"/>
+                                        <rect key="frame" x="66" y="0.0" width="58" height="30"/>
                                         <state key="normal" title="Italic">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="97g-bd-kwF">
-                                        <rect key="frame" x="94" y="0.0" width="39" height="30"/>
+                                        <rect key="frame" x="132" y="0.0" width="58" height="30"/>
                                         <state key="normal" title="Bullet">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1pJ-mr-jhZ">
-                                        <rect key="frame" x="141" y="0.0" width="39" height="30"/>
+                                        <rect key="frame" x="198" y="0.0" width="58" height="30"/>
                                         <state key="normal" title="HREF">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1fo-sM-IN7">
+                                        <rect key="frame" x="264" y="0.0" width="58" height="30"/>
+                                        <state key="normal" title="Heading">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
@@ -57,10 +63,10 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3VA-ma-B3r" secondAttribute="trailing" id="52f-RU-TkT"/>
                             <constraint firstItem="i0J-Be-jcC" firstAttribute="top" secondItem="3VA-ma-B3r" secondAttribute="bottom" constant="20" id="9jh-ZS-DPk"/>
-                            <constraint firstItem="af7-ge-hHE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="CZ1-GC-19T"/>
+                            <constraint firstItem="af7-ge-hHE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="CZ1-GC-19T"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="i0J-Be-jcC" secondAttribute="bottom" constant="20" id="FFb-Mk-x76"/>
                             <constraint firstItem="af7-ge-hHE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OzH-CT-dPr"/>
-                            <constraint firstItem="3VA-ma-B3r" firstAttribute="top" secondItem="af7-ge-hHE" secondAttribute="bottom" constant="20" id="Qdv-JP-f9S"/>
+                            <constraint firstItem="3VA-ma-B3r" firstAttribute="top" secondItem="af7-ge-hHE" secondAttribute="bottom" constant="10" id="Qdv-JP-f9S"/>
                             <constraint firstItem="i0J-Be-jcC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Xdb-BD-vbi"/>
                             <constraint firstItem="3VA-ma-B3r" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bm4-X6-cQn"/>
                         </constraints>
@@ -70,6 +76,7 @@
                     <connections>
                         <outlet property="boldButton" destination="DO8-Wq-eQL" id="AIP-Dz-Hdd"/>
                         <outlet property="bulletButton" destination="97g-bd-kwF" id="ZK7-ni-FH5"/>
+                        <outlet property="headingButton" destination="1fo-sM-IN7" id="aXf-qR-PGZ"/>
                         <outlet property="hrefButton" destination="1pJ-mr-jhZ" id="xM1-JV-71L"/>
                         <outlet property="italicButton" destination="upK-wb-ugt" id="UFl-0U-cDc"/>
                         <outlet property="printButton" destination="i0J-Be-jcC" id="mUo-ec-nze"/>
