@@ -42,6 +42,12 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var numberButton: UIButton! {
+        didSet {
+            numberButton.addTarget(self, action: #selector(onNumber(_:)), for: .touchUpInside)
+        }
+    }
+
     @IBOutlet weak var hrefButton: UIButton! {
         didSet {
             hrefButton.addTarget(self, action: #selector(onHREF(_:)), for: .touchUpInside)
@@ -118,6 +124,10 @@ extension ViewController {
         toggle(attribute: "bullet", associatedWith: bulletButton)
     }
     
+    @objc func onNumber(_ sender: UIButton) {
+        toggle(attribute: "number", associatedWith: numberButton)
+    }
+
     @objc func onHREF(_ sender: UIButton) {
         checkActivated(attribute: "href") { isActivated in
             if isActivated {
@@ -148,6 +158,7 @@ extension ViewController: WKScriptMessageHandler {
             updateTitleColor(of: boldButton, associatedWith: "bold")
             updateTitleColor(of: italicButton, associatedWith: "italic")
             updateTitleColor(of: bulletButton, associatedWith: "bullet")
+            updateTitleColor(of: numberButton, associatedWith: "number")
             updateTitleColor(of: hrefButton, associatedWith: "href")
             updateTitleColor(of: headingButton, associatedWith: "heading1")
         }

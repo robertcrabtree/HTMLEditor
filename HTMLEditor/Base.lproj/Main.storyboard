@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="af7-ge-hHE">
-                                <rect key="frame" x="46" y="98" width="322" height="30"/>
+                                <rect key="frame" x="13" y="98" width="388" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DO8-Wq-eQL">
                                         <rect key="frame" x="0.0" y="0.0" width="58" height="30"/>
@@ -36,14 +36,20 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1pJ-mr-jhZ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GqN-7i-uoj">
                                         <rect key="frame" x="198" y="0.0" width="58" height="30"/>
+                                        <state key="normal" title="Number">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1pJ-mr-jhZ">
+                                        <rect key="frame" x="264" y="0.0" width="58" height="30"/>
                                         <state key="normal" title="HREF">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1fo-sM-IN7">
-                                        <rect key="frame" x="264" y="0.0" width="58" height="30"/>
+                                        <rect key="frame" x="330" y="0.0" width="58" height="30"/>
                                         <state key="normal" title="Heading">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -79,6 +85,7 @@
                         <outlet property="headingButton" destination="1fo-sM-IN7" id="aXf-qR-PGZ"/>
                         <outlet property="hrefButton" destination="1pJ-mr-jhZ" id="xM1-JV-71L"/>
                         <outlet property="italicButton" destination="upK-wb-ugt" id="UFl-0U-cDc"/>
+                        <outlet property="numberButton" destination="GqN-7i-uoj" id="MY0-3y-ANI"/>
                         <outlet property="printButton" destination="i0J-Be-jcC" id="mUo-ec-nze"/>
                         <outlet property="webViewContainerView" destination="3VA-ma-B3r" id="dur-BW-CCe"/>
                     </connections>
