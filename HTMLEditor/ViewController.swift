@@ -35,6 +35,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var headingButton: UIButton!
     @IBOutlet weak var webViewContainerView: UIView!
     @IBOutlet weak var htmlTextView: UITextView!
+    @IBOutlet weak var htmlLabel: UILabel!
 
     lazy var webView: WKWebView = {
         let controller = WKUserContentController()
@@ -247,6 +248,7 @@ extension ViewController {
                 print("Error: \(error)")
             } else if let result = result as? String {
                 self.htmlTextView.text = result
+                self.htmlLabel.isHidden = !result.isEmpty
             } else {
                 print("oh crap")
             }
