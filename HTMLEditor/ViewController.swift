@@ -71,26 +71,26 @@ extension ViewController {
         let html = try! String(contentsOfFile: htmlFile, encoding: .utf8)
         webView.loadHTMLString(html, baseURL: Bundle.main.bundleURL)
         
-        Attribute.allCases.forEach {
-            switch $0 {
+        Attribute.allCases.forEach { attribute in
+            
+            func associate(attribute: Attribute, button: UIButton, action: Selector) {
+                attributeButtonMap[attribute] = button
+                button.addTarget(self, action: action, for: .touchUpInside)
+            }
+            
+            switch attribute {
             case .bold:
-                attributeButtonMap[.bold] = boldButton
-                boldButton.addTarget(self, action: #selector(onBold(_:)), for: .touchUpInside)
+                associate(attribute: .bold, button: boldButton, action: #selector(onBold(_:)))
             case .bullet:
-                attributeButtonMap[.bullet] = bulletButton
-                bulletButton.addTarget(self, action: #selector(onBullet(_:)), for: .touchUpInside)
+                associate(attribute: .bullet, button: bulletButton, action: #selector(onBullet(_:)))
             case .heading1:
-                attributeButtonMap[.heading1] = headingButton
-                headingButton.addTarget(self, action: #selector(onHeading(_:)), for: .touchUpInside)
+                associate(attribute: .heading1, button: headingButton, action: #selector(onHeading(_:)))
             case .href:
-                attributeButtonMap[.href] = hrefButton
-                hrefButton.addTarget(self, action: #selector(onHREF(_:)), for: .touchUpInside)
+                associate(attribute: .href, button: hrefButton, action: #selector(onHREF(_:)))
             case .italic:
-                attributeButtonMap[.italic] = italicButton
-                italicButton.addTarget(self, action: #selector(onItalic(_:)), for: .touchUpInside)
+                associate(attribute: .italic, button: italicButton, action: #selector(onItalic(_:)))
             case .number:
-                attributeButtonMap[.number] = numberButton
-                numberButton.addTarget(self, action: #selector(onNumber(_:)), for: .touchUpInside)
+                associate(attribute: .number, button: numberButton, action: #selector(onNumber(_:)))
             }
         }
     }
