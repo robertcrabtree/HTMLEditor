@@ -41,6 +41,12 @@ class ViewController: UIViewController {
             bulletButton.addTarget(self, action: #selector(onBullet(_:)), for: .touchUpInside)
         }
     }
+    
+    @IBOutlet weak var hrefButton: UIButton! {
+        didSet {
+            hrefButton.addTarget(self, action: #selector(onHREF(_:)), for: .touchUpInside)
+        }
+    }
 
     @IBOutlet weak var webViewContainerView: UIView!
     
@@ -105,6 +111,20 @@ extension ViewController {
     @objc func onBullet(_ sender: UIButton) {
         toggle(attribute: "bullet", associatedWith: bulletButton)
     }
+    
+    @objc func onHREF(_ sender: UIButton) {
+        checkActivated(attribute: "href") { isActivated in
+            if isActivated {
+                self.toggle(attribute: "href", associatedWith: self.hrefButton)
+            } else {
+                self.promptURL { urlString in
+                    self.activateHREF(urlString) {
+                        self.updateTitleColor(of: self.hrefButton, associatedWith: "href")
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Message handler
@@ -118,6 +138,7 @@ extension ViewController: WKScriptMessageHandler {
             updateTitleColor(of: boldButton, associatedWith: "bold")
             updateTitleColor(of: italicButton, associatedWith: "italic")
             updateTitleColor(of: bulletButton, associatedWith: "bullet")
+            updateTitleColor(of: hrefButton, associatedWith: "href")
         }
     }
 }
@@ -145,6 +166,19 @@ extension ViewController {
             if let error = error {
                 print("activate Error: \(error)")
             } else {
+                print("result: \(String(describing: result))")
+                handle()
+            }
+        }
+    }
+    
+    private func activateHREF(_ urlString: String, then handle: @escaping() -> Void) {
+        let js = "document.querySelector('trix-editor').editor.activateAttribute('href', '\(urlString)')"
+        webView.evaluateJavaScript(js) { (result, error) in
+            if let error = error {
+                print("activateHREF Error: \(error)")
+            } else {
+                print("result: \(String(describing: result))")
                 handle()
             }
         }
@@ -156,6 +190,7 @@ extension ViewController {
             if let error = error {
                 print("deactivate Error: \(error)")
             } else {
+                print("result: \(String(describing: result))")
                 handle()
             }
         }
@@ -187,5 +222,18 @@ extension ViewController {
         } else {
             attributeButton.setTitleColor(.black, for: .normal)
         }
+    }
+    
+    private func promptURL(then handle: @escaping(String) -> Void) {
+        let alert = UIAlertController(title: "Enter URL", message: "Supply a valid URL", preferredStyle: .alert)
+        alert.addAction(.init(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(.init(title: "Ok", style: .default, handler: { _ in
+            guard let text = alert.textFields?[0].text, !text.isEmpty else { return }
+            handle(text)
+        }))
+        alert.addTextField { textField in
+            textField.placeholder = "URL"
+        }
+        present(alert, animated: true)
     }
 }

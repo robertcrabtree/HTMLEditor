@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="af7-ge-hHE">
-                                <rect key="frame" x="140.5" y="88" width="133" height="30"/>
+                                <rect key="frame" x="117" y="88" width="180" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DO8-Wq-eQL">
                                         <rect key="frame" x="0.0" y="0.0" width="39" height="30"/>
@@ -33,6 +33,12 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="97g-bd-kwF">
                                         <rect key="frame" x="94" y="0.0" width="39" height="30"/>
                                         <state key="normal" title="Bullet">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1pJ-mr-jhZ">
+                                        <rect key="frame" x="141" y="0.0" width="39" height="30"/>
+                                        <state key="normal" title="HREF">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
@@ -64,6 +70,7 @@
                     <connections>
                         <outlet property="boldButton" destination="DO8-Wq-eQL" id="AIP-Dz-Hdd"/>
                         <outlet property="bulletButton" destination="97g-bd-kwF" id="ZK7-ni-FH5"/>
+                        <outlet property="hrefButton" destination="1pJ-mr-jhZ" id="xM1-JV-71L"/>
                         <outlet property="italicButton" destination="upK-wb-ugt" id="UFl-0U-cDc"/>
                         <outlet property="printButton" destination="i0J-Be-jcC" id="mUo-ec-nze"/>
                         <outlet property="webViewContainerView" destination="3VA-ma-B3r" id="dur-BW-CCe"/>
