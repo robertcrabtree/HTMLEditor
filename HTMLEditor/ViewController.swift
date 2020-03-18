@@ -135,7 +135,7 @@ extension ViewController {
             if let error = error {
                 print("Error: \(error)")
             } else if let result = result {
-                print("Result: \(result)")
+                print("HTML: \(result)")
             } else {
                 print("oh crap")
             }
@@ -164,9 +164,7 @@ extension ViewController {
                 self.toggle(attribute: .href)
             } else {
                 self.promptURL { urlString in
-                    self.activateHREF(urlString) {
-                        self.updateButtonColor(for: .href)
-                    }
+                    self.activate(attribute: .href, value: urlString)
                 }
             }
         }
@@ -209,38 +207,31 @@ extension ViewController {
         }
     }
     
-    private func activate(attribute: Attribute, then handle: @escaping () -> Void) {
-        let js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute.rawValue)')"
+    private func activate(attribute: Attribute, value: String? = nil) {
+        let js: String
+        if let value = value {
+            js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute.rawValue)', '\(value)')"
+        } else {
+            js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute.rawValue)')"
+        }
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("activate Error: \(error)")
             } else {
                 print("result: \(String(describing: result))")
-                handle()
+                self.updateButtonColor(for: attribute)
             }
         }
     }
     
-    private func activateHREF(_ urlString: String, then handle: @escaping() -> Void) {
-        let js = "document.querySelector('trix-editor').editor.activateAttribute('href', '\(urlString)')"
-        webView.evaluateJavaScript(js) { (result, error) in
-            if let error = error {
-                print("activateHREF Error: \(error)")
-            } else {
-                print("result: \(String(describing: result))")
-                handle()
-            }
-        }
-    }
-    
-    private func deactivate(attribute: Attribute, then handle: @escaping () -> Void) {
+    private func deactivate(attribute: Attribute) {
         let js = "document.querySelector('trix-editor').editor.deactivateAttribute('\(attribute.rawValue)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("deactivate Error: \(error)")
             } else {
                 print("result: \(String(describing: result))")
-                handle()
+                self.updateButtonColor(for: attribute)
             }
         }
     }
@@ -248,13 +239,9 @@ extension ViewController {
     private func toggle(attribute: Attribute) {
         checkActivated(attribute: attribute) { isActivated in
             if isActivated {
-                self.deactivate(attribute: attribute) {
-                    self.updateButtonColor(for: attribute)
-                }
+                self.deactivate(attribute: attribute)
             } else {
-                self.activate(attribute: attribute) {
-                    self.updateButtonColor(for: attribute)
-                }
+                self.activate(attribute: attribute)
             }
         }
     }
