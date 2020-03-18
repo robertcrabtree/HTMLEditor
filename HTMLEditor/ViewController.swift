@@ -27,48 +27,13 @@ class ViewController: UIViewController {
         case heading1
     }
     
-    @IBOutlet weak var printButton: UIButton! {
-        didSet {
-            printButton.addTarget(self, action: #selector(onPrintHTML(_:)), for: .touchUpInside)
-        }
-    }
-    
-    @IBOutlet weak var boldButton: UIButton! {
-        didSet {
-            boldButton.addTarget(self, action: #selector(onBold(_:)), for: .touchUpInside)
-        }
-    }
-    
-    @IBOutlet weak var italicButton: UIButton! {
-        didSet {
-            italicButton.addTarget(self, action: #selector(onItalic(_:)), for: .touchUpInside)
-        }
-    }
-    
-    @IBOutlet weak var bulletButton: UIButton! {
-        didSet {
-            bulletButton.addTarget(self, action: #selector(onBullet(_:)), for: .touchUpInside)
-        }
-    }
-    
-    @IBOutlet weak var numberButton: UIButton! {
-        didSet {
-            numberButton.addTarget(self, action: #selector(onNumber(_:)), for: .touchUpInside)
-        }
-    }
-
-    @IBOutlet weak var hrefButton: UIButton! {
-        didSet {
-            hrefButton.addTarget(self, action: #selector(onHREF(_:)), for: .touchUpInside)
-        }
-    }
-    
-    @IBOutlet weak var headingButton: UIButton! {
-        didSet {
-            headingButton.addTarget(self, action: #selector(onHeading(_:)), for: .touchUpInside)
-        }
-    }
-
+    @IBOutlet weak var printButton: UIButton!
+    @IBOutlet weak var boldButton: UIButton!
+    @IBOutlet weak var italicButton: UIButton!
+    @IBOutlet weak var bulletButton: UIButton!
+    @IBOutlet weak var numberButton: UIButton!
+    @IBOutlet weak var hrefButton: UIButton!
+    @IBOutlet weak var headingButton: UIButton!
     @IBOutlet weak var webViewContainerView: UIView!
     
     lazy var webView: WKWebView = {
@@ -82,26 +47,7 @@ class ViewController: UIViewController {
         return webView
     }()
     
-    lazy var attributeButtonMap: [Attribute: UIButton] = {
-        var map: [Attribute: UIButton] = [:]
-        Attribute.allCases.forEach {
-            switch $0 {
-            case .bold:
-                map[.bold] = self.boldButton
-            case .bullet:
-                map[.bullet] = self.bulletButton
-            case .heading1:
-                map[.heading1] = self.headingButton
-            case .href:
-                map[.href] = self.hrefButton
-            case .italic:
-                map[.italic] = self.italicButton
-            case .number:
-                map[.number] = self.numberButton
-            }
-        }
-        return map
-    }()
+    lazy var attributeButtonMap: [Attribute: UIButton] = [:]
 }
 
 // MARK: - Life cycle
@@ -123,6 +69,31 @@ extension ViewController {
         let htmlFile = Bundle.main.path(forResource: "index", ofType: "html")!
         let html = try! String(contentsOfFile: htmlFile, encoding: .utf8)
         webView.loadHTMLString(html, baseURL: Bundle.main.bundleURL)
+        
+        printButton.addTarget(self, action: #selector(onPrintHTML(_:)), for: .touchUpInside)
+
+        Attribute.allCases.forEach {
+            switch $0 {
+            case .bold:
+                attributeButtonMap[.bold] = boldButton
+                boldButton.addTarget(self, action: #selector(onBold(_:)), for: .touchUpInside)
+            case .bullet:
+                attributeButtonMap[.bullet] = bulletButton
+                bulletButton.addTarget(self, action: #selector(onBullet(_:)), for: .touchUpInside)
+            case .heading1:
+                attributeButtonMap[.heading1] = headingButton
+                headingButton.addTarget(self, action: #selector(onHeading(_:)), for: .touchUpInside)
+            case .href:
+                attributeButtonMap[.href] = hrefButton
+                hrefButton.addTarget(self, action: #selector(onHREF(_:)), for: .touchUpInside)
+            case .italic:
+                attributeButtonMap[.italic] = italicButton
+                italicButton.addTarget(self, action: #selector(onItalic(_:)), for: .touchUpInside)
+            case .number:
+                attributeButtonMap[.number] = numberButton
+                numberButton.addTarget(self, action: #selector(onNumber(_:)), for: .touchUpInside)
+            }
+        }
     }
 }
 
