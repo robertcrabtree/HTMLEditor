@@ -18,6 +18,15 @@ class ViewController: UIViewController {
         case selectionChanged
     }
     
+    enum Attribute: String, CaseIterable {
+        case bold
+        case italic
+        case bullet
+        case number
+        case href
+        case heading1
+    }
+    
     @IBOutlet weak var printButton: UIButton! {
         didSet {
             printButton.addTarget(self, action: #selector(onPrintHTML(_:)), for: .touchUpInside)
@@ -72,6 +81,27 @@ class ViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
     }()
+    
+    lazy var attributeButtonMap: [Attribute: UIButton] = {
+        var map: [Attribute: UIButton] = [:]
+        Attribute.allCases.forEach {
+            switch $0 {
+            case .bold:
+                map[.bold] = self.boldButton
+            case .bullet:
+                map[.bullet] = self.bulletButton
+            case .heading1:
+                map[.heading1] = self.headingButton
+            case .href:
+                map[.href] = self.hrefButton
+            case .italic:
+                map[.italic] = self.italicButton
+            case .number:
+                map[.number] = self.numberButton
+            }
+        }
+        return map
+    }()
 }
 
 // MARK: - Life cycle
@@ -113,29 +143,29 @@ extension ViewController {
     }
     
     @objc func onBold(_ sender: UIButton) {
-        toggle(attribute: "bold", associatedWith: boldButton)
+        toggle(attribute: .bold)
     }
     
     @objc func onItalic(_ sender: UIButton) {
-        toggle(attribute: "italic", associatedWith: italicButton)
+        toggle(attribute: .italic)
     }
     
     @objc func onBullet(_ sender: UIButton) {
-        toggle(attribute: "bullet", associatedWith: bulletButton)
+        toggle(attribute: .bullet)
     }
     
     @objc func onNumber(_ sender: UIButton) {
-        toggle(attribute: "number", associatedWith: numberButton)
+        toggle(attribute: .number)
     }
 
     @objc func onHREF(_ sender: UIButton) {
-        checkActivated(attribute: "href") { isActivated in
+        checkActivated(attribute: .href) { isActivated in
             if isActivated {
-                self.toggle(attribute: "href", associatedWith: self.hrefButton)
+                self.toggle(attribute: .href)
             } else {
                 self.promptURL { urlString in
                     self.activateHREF(urlString) {
-                        self.updateTitleColor(of: self.hrefButton, associatedWith: "href")
+                        self.updateButtonColor(for: .href)
                     }
                 }
             }
@@ -143,7 +173,7 @@ extension ViewController {
     }
     
     @objc func onHeading(_ sender: UIButton) {
-        toggle(attribute: "heading1", associatedWith: headingButton)
+        toggle(attribute: .heading1)
     }
 }
 
@@ -155,12 +185,9 @@ extension ViewController: WKScriptMessageHandler {
         guard let message = Message(rawValue: message.name) else { print("crap"); return }
         switch message {
         case .selectionChanged, .textChanged:
-            updateTitleColor(of: boldButton, associatedWith: "bold")
-            updateTitleColor(of: italicButton, associatedWith: "italic")
-            updateTitleColor(of: bulletButton, associatedWith: "bullet")
-            updateTitleColor(of: numberButton, associatedWith: "number")
-            updateTitleColor(of: hrefButton, associatedWith: "href")
-            updateTitleColor(of: headingButton, associatedWith: "heading1")
+            Attribute.allCases.forEach {
+                updateButtonColor(for: $0)
+            }
         }
     }
 }
@@ -169,8 +196,8 @@ extension ViewController: WKScriptMessageHandler {
 
 extension ViewController {
     
-    private func checkActivated(attribute: String, then handle: @escaping (Bool) -> Void) {
-        let js = "document.querySelector('trix-editor').editor.attributeIsActive('\(attribute)')"
+    private func checkActivated(attribute: Attribute, then handle: @escaping (Bool) -> Void) {
+        let js = "document.querySelector('trix-editor').editor.attributeIsActive('\(attribute.rawValue)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("isActivated Error: \(error)")
@@ -182,8 +209,8 @@ extension ViewController {
         }
     }
     
-    private func activate(attribute: String, then handle: @escaping () -> Void) {
-        let js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute)')"
+    private func activate(attribute: Attribute, then handle: @escaping () -> Void) {
+        let js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute.rawValue)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("activate Error: \(error)")
@@ -206,8 +233,8 @@ extension ViewController {
         }
     }
     
-    private func deactivate(attribute: String, then handle: @escaping () -> Void) {
-        let js = "document.querySelector('trix-editor').editor.deactivateAttribute('\(attribute)')"
+    private func deactivate(attribute: Attribute, then handle: @escaping () -> Void) {
+        let js = "document.querySelector('trix-editor').editor.deactivateAttribute('\(attribute.rawValue)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("deactivate Error: \(error)")
@@ -218,31 +245,28 @@ extension ViewController {
         }
     }
     
-    private func toggle(attribute: String, associatedWith attributeButton: UIButton) {
+    private func toggle(attribute: Attribute) {
         checkActivated(attribute: attribute) { isActivated in
             if isActivated {
                 self.deactivate(attribute: attribute) {
-                    self.updateTitleColor(of: attributeButton, associatedWith: attribute)
+                    self.updateButtonColor(for: attribute)
                 }
             } else {
                 self.activate(attribute: attribute) {
-                    self.updateTitleColor(of: attributeButton, associatedWith: attribute)
+                    self.updateButtonColor(for: attribute)
                 }
             }
         }
     }
     
-    private func updateTitleColor(of attributeButton: UIButton, associatedWith attribute: String) {
+    private func updateButtonColor(for attribute: Attribute) {
+        guard let button = attributeButtonMap[attribute] else { return }
         checkActivated(attribute: attribute) { isActivated in
-            self.updateTitleColor(of: attributeButton, isActivated: isActivated)
-        }
-    }
-    
-    private func updateTitleColor(of attributeButton: UIButton, isActivated: Bool) {
-        if isActivated {
-            attributeButton.setTitleColor(.red, for: .normal)
-        } else {
-            attributeButton.setTitleColor(.black, for: .normal)
+            if isActivated {
+                button.setTitleColor(.red, for: .normal)
+            } else {
+                button.setTitleColor(.black, for: .normal)
+            }
         }
     }
     
