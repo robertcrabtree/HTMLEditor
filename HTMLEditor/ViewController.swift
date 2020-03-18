@@ -86,70 +86,70 @@ extension ViewController {
         toggle(attribute: "italic", for: italicButton)
     }
     
-    func isActive(attribute: String, completion: @escaping (Bool) -> Void) {
+    func checkActivated(attribute: String, then handle: @escaping (Bool) -> Void) {
         let js = "document.querySelector('trix-editor').editor.attributeIsActive('\(attribute)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
-                print("isActive Error: \(error)")
+                print("isActivated Error: \(error)")
             } else if let result = result as? Bool {
-                print("isActive Result: \(result)")
-                completion(result)
+                print("isActivated Result: \(result)")
+                handle(result)
             } else {
-                print("isActive oh crap")
+                print("isActivated oh crap")
             }
         }
     }
     
-    func activate(attribute: String, completion: @escaping (Bool) -> Void) {
+    func activate(attribute: String, then handle: @escaping (Bool) -> Void) {
         let js = "document.querySelector('trix-editor').editor.activateAttribute('\(attribute)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("activate Error: \(error)")
             } else if let result = result as? Bool {
                 print("activate Result: \(result)")
-                completion(result)
+                handle(result)
             } else {
                 print("activate oh crap")
             }
         }
     }
     
-    func deactivate(attribute: String, completion: @escaping (Bool) -> Void) {
+    func deactivate(attribute: String, then handle: @escaping (Bool) -> Void) {
         let js = "document.querySelector('trix-editor').editor.deactivateAttribute('\(attribute)')"
         webView.evaluateJavaScript(js) { (result, error) in
             if let error = error {
                 print("deactivate Error: \(error)")
             } else if let result = result as? Bool {
                 print("deactivate Result: \(result)")
-                completion(result)
+                handle(result)
             } else {
                 print("deactivate oh crap")
             }
         }
     }
     
-    func toggle(attribute: String, for button: UIButton) {
-        isActive(attribute: attribute) { active in
-            if active {
+    func toggle(attribute: String, for attributeButton: UIButton) {
+        checkActivated(attribute: attribute) { isActivated in
+            if isActivated {
                 self.deactivate(attribute: attribute) { _ in
-                    self.update(attributeButton: button, attribute: attribute)
+                    self.update(attributeButton: attributeButton, attribute: attribute)
                 }
             } else {
                 self.activate(attribute: attribute) { _ in
-                    self.update(attributeButton: button, attribute: attribute)
+                    self.update(attributeButton: attributeButton, attribute: attribute)
                 }
             }
         }
     }
     
     func update(attributeButton: UIButton, attribute: String) {
-        isActive(attribute: attribute) { active in
-            self.update(attributeButton: attributeButton, isActive: active)
+        checkActivated(attribute: attribute) { isActivated in
+            self.update(attributeButton: attributeButton, isActivated: isActivated)
         }
     }
     
-    func update(attributeButton: UIButton, isActive: Bool) {
-        if isActive {
+    func update(attributeButton: UIButton, isActivated: Bool) {
+        if isActivated {
             attributeButton.setTitleColor(.red, for: .normal)
         } else {
             attributeButton.setTitleColor(.black, for: .normal)
