@@ -27,7 +27,6 @@ class ViewController: UIViewController {
         case heading1
     }
     
-    @IBOutlet weak var printButton: UIButton!
     @IBOutlet weak var boldButton: UIButton!
     @IBOutlet weak var italicButton: UIButton!
     @IBOutlet weak var bulletButton: UIButton!
@@ -35,7 +34,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var hrefButton: UIButton!
     @IBOutlet weak var headingButton: UIButton!
     @IBOutlet weak var webViewContainerView: UIView!
-    
+    @IBOutlet weak var htmlTextView: UITextView!
+
     lazy var webView: WKWebView = {
         let controller = WKUserContentController()
         controller.add(self, name: Message.textChanged.rawValue)
@@ -70,8 +70,6 @@ extension ViewController {
         let html = try! String(contentsOfFile: htmlFile, encoding: .utf8)
         webView.loadHTMLString(html, baseURL: Bundle.main.bundleURL)
         
-        printButton.addTarget(self, action: #selector(onPrintHTML(_:)), for: .touchUpInside)
-
         Attribute.allCases.forEach {
             switch $0 {
             case .bold:
@@ -100,18 +98,6 @@ extension ViewController {
 // MARK: - Action methods
 
 extension ViewController {
-    
-    @objc func onPrintHTML(_ sender: UIButton) {
-        webView.evaluateJavaScript("document.getElementById('thedata').value") { (result, error) in
-            if let error = error {
-                print("Error: \(error)")
-            } else if let result = result {
-                print("HTML: \(result)")
-            } else {
-                print("oh crap")
-            }
-        }
-    }
     
     @objc func onBold(_ sender: UIButton) {
         toggle(attribute: .bold)
@@ -157,6 +143,7 @@ extension ViewController: WKScriptMessageHandler {
             Attribute.allCases.forEach {
                 updateButtonColor(for: $0)
             }
+            loadHTMLResult()
         }
     }
 }
@@ -239,5 +226,17 @@ extension ViewController {
             textField.placeholder = "URL"
         }
         present(alert, animated: true)
+    }
+    
+    private func loadHTMLResult() {
+        webView.evaluateJavaScript("document.getElementById('thedata').value") { (result, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else if let result = result as? String {
+                self.htmlTextView.text = result
+            } else {
+                print("oh crap")
+            }
+        }
     }
 }

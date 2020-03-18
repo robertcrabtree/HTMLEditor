@@ -57,24 +57,29 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3VA-ma-B3r">
-                                <rect key="frame" x="0.0" y="138" width="414" height="654"/>
+                                <rect key="frame" x="0.0" y="138" width="414" height="362"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0J-Be-jcC">
-                                <rect key="frame" x="168" y="812" width="78" height="30"/>
-                                <state key="normal" title="Print HTML"/>
-                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NC4-fy-T1a">
+                                <rect key="frame" x="0.0" y="500" width="414" height="362"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="NC4-fy-T1a" secondAttribute="bottom" id="3du-r3-zgJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3VA-ma-B3r" secondAttribute="trailing" id="52f-RU-TkT"/>
-                            <constraint firstItem="i0J-Be-jcC" firstAttribute="top" secondItem="3VA-ma-B3r" secondAttribute="bottom" constant="20" id="9jh-ZS-DPk"/>
                             <constraint firstItem="af7-ge-hHE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="CZ1-GC-19T"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="i0J-Be-jcC" secondAttribute="bottom" constant="20" id="FFb-Mk-x76"/>
                             <constraint firstItem="af7-ge-hHE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OzH-CT-dPr"/>
+                            <constraint firstItem="NC4-fy-T1a" firstAttribute="height" secondItem="3VA-ma-B3r" secondAttribute="height" id="QIE-pp-cIw"/>
                             <constraint firstItem="3VA-ma-B3r" firstAttribute="top" secondItem="af7-ge-hHE" secondAttribute="bottom" constant="10" id="Qdv-JP-f9S"/>
-                            <constraint firstItem="i0J-Be-jcC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Xdb-BD-vbi"/>
+                            <constraint firstItem="NC4-fy-T1a" firstAttribute="top" secondItem="3VA-ma-B3r" secondAttribute="bottom" id="TrM-rC-uTF"/>
+                            <constraint firstItem="NC4-fy-T1a" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="UF5-Bz-Suc"/>
                             <constraint firstItem="3VA-ma-B3r" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bm4-X6-cQn"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NC4-fy-T1a" secondAttribute="trailing" id="wzu-hO-NWS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -84,9 +89,9 @@
                         <outlet property="bulletButton" destination="97g-bd-kwF" id="ZK7-ni-FH5"/>
                         <outlet property="headingButton" destination="1fo-sM-IN7" id="aXf-qR-PGZ"/>
                         <outlet property="hrefButton" destination="1pJ-mr-jhZ" id="xM1-JV-71L"/>
+                        <outlet property="htmlTextView" destination="NC4-fy-T1a" id="39A-6O-PEU"/>
                         <outlet property="italicButton" destination="upK-wb-ugt" id="UFl-0U-cDc"/>
                         <outlet property="numberButton" destination="GqN-7i-uoj" id="MY0-3y-ANI"/>
-                        <outlet property="printButton" destination="i0J-Be-jcC" id="mUo-ec-nze"/>
                         <outlet property="webViewContainerView" destination="3VA-ma-B3r" id="dur-BW-CCe"/>
                     </connections>
                 </viewController>
